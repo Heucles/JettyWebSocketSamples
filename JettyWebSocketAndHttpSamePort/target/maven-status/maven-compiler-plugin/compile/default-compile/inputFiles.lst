@@ -1,0 +1,12 @@
+/Users/u001339/dev/JettyWebSocket/src/main/java/jettyWebSocket/MessagingServer.java
+/Users/u001339/dev/JettyWebSocket/src/main/java/jettyWebSocket/data/Message.java
+/Users/u001339/dev/JettyWebSocket/src/main/java/jettyWebSocket/http/HttpHelloWorld.java
+/Users/u001339/dev/JettyWebSocket/src/main/java/jettyWebSocket/data/Data.java
+/Users/u001339/dev/JettyWebSocket/src/main/java/jettyWebSocket/MessagingLogic.java
+/Users/u001339/dev/JettyWebSocket/src/main/java/jettyWebSocket/data/Repository.java
+/Users/u001339/dev/JettyWebSocket/src/main/java/jettyWebSocket/HttpServlet.java
+/Users/u001339/dev/JettyWebSocket/src/main/java/jettyWebSocket/MessagingServlet.java
+/Users/u001339/dev/JettyWebSocket/src/main/java/jettyWebSocket/data/User.java
+/Users/u001339/dev/JettyWebSocket/src/main/java/jettyWebSocket/MessagingServerBkp.java
+/Users/u001339/dev/JettyWebSocket/src/main/java/jettyWebSocket/MessagingAdapter.java
+/Users/u001339/dev/JettyWebSocket/src/main/java/jettyWebSocket/UserSession.java

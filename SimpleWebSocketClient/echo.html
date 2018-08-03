@@ -1,0 +1,164 @@
+<html ng-app="app">
+
+<head>
+    <script type="text/javascript">
+
+        var myWebSocket;
+
+
+        function connectToWS() {
+            var endpoint = document.getElementById("endpoint").value;
+            if (myWebSocket !== undefined) {
+                myWebSocket.close()
+            }
+
+            myWebSocket = new WebSocket(endpoint);
+
+            myWebSocket.onmessage = function (event) {
+                var leng;
+                if (event.data.size === undefined) {
+                    leng = event.data.length
+                } else {
+                    leng = event.data.size
+                }
+
+                var eventData = JSON.parse(event.data);
+
+                if (eventData.operation ===1) {
+                    document.getElementById("logonStatus").innerHTML = eventData.message.body;
+                }else{
+                    document.getElementById("receivedMessage").value += "\n" + eventData.from + " disse: " + eventData.body;
+                }
+
+                console.log("onmessage. size: " + leng + ", content: " + eventData);
+            }
+
+            myWebSocket.onopen = function (evt) {
+                console.log("onopen.");
+                login();
+            };
+
+            myWebSocket.onclose = function (evt) {
+                console.log("onclose.");
+            };
+
+            myWebSocket.onerror = function (evt) {
+                console.log("Error!");
+            };
+        }
+
+        function login() {
+            var userSelect = document.getElementById("userName");
+            var userName = userSelect[userSelect.selectedIndex].attributes["name"].value;
+            var password = userSelect[userSelect.selectedIndex].attributes["password"].value;
+
+            var loginObject = {
+                "operation": 1,
+                "user": {
+                    "username": userName,
+                    "password": password
+                }
+            };
+
+            myWebSocket.send(JSON.stringify(loginObject));
+        }
+
+        function sendMsg() {
+
+            var receiverSelect = document.getElementById("receiverName");
+            var receiverName = receiverSelect[receiverSelect.selectedIndex].attributes["name"].value;
+
+            var senderSelect = document.getElementById("userName");
+            var senderName = senderSelect[senderSelect.selectedIndex].attributes["name"].value;
+
+            var messageValue = document.getElementById("myMessage").value;
+            var messageObject = {
+                "operation": 101,
+                "session": "SOMEVALIDSESSION",
+                "message": {
+                    "from": senderName,
+                    "to": receiverName,
+                    "body": messageValue,
+                    "sent": 1234567
+                }
+            };
+
+            myWebSocket.send(JSON.stringify(messageObject));
+            document.getElementById("receivedMessage").value += "\n" + senderName + " disse: " + messageValue;
+        }
+
+        function closeConn() {
+            myWebSocket.close();
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <form>
+        connection to:
+        <input type="text" id="endpoint" name="endpoint" value="ws://localhost:8080/messaging" style="width: 200px">
+        <br>
+    </form>
+
+    <input type="button" onclick="connectToWS()" value="connect to WebSocket endpoint" />
+    <br>
+    <br>
+
+    <h4 id="logonStatus"></h4>
+
+    <form>
+        User Name:
+        <select id="userName">
+            <option name ="Naldo" password="654321">Naldo</option>
+            <option name ="Heucles" password="123456">Heucles</option>
+            <option name ="Breno" password="qwerty">Breno</option>
+          </select>
+        <br>
+    </form>
+
+    <!-- <input type="button" onclick="login()" value="Login" />
+    <br>
+    <br> -->
+
+    <form>
+        Receiver Name:
+        <select id="receiverName">
+                <option name ="Heucles">Heucles</option>
+                <option name ="Naldo">Naldo</option>
+                <option name ="Breno">Breno</option>
+          </select>
+        <br>
+    </form>
+
+    <form>
+        Send message:
+        <input type="text" id="myMessage" name="myMessage" value="">
+        <br>
+    </form>
+
+    <input type="button" onclick="sendMsg()" value="Send message" />
+
+    <input type="button" onclick="closeConn()" value="Close connection" />
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <form>
+        Chat history:
+        <textarea name="message" rows="10" cols="30" id="receivedMessage" name="receivedMessage"></textarea></textarea>
+        <br>
+    </form>
+
+
+
+
+</body>
+
+</html>
